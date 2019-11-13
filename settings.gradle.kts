@@ -16,6 +16,12 @@ pluginManagement {
     }
 }
 
+sourceControl {
+    gitRepository(uri("https://github.com/MaxKellermann/beacon")) {
+        producesModule("beacon:java")
+    }
+}
+
 include("ci")
 include("aat-lib")
 include("aat-gtk")

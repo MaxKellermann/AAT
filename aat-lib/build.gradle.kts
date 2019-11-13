@@ -62,6 +62,12 @@ dependencies {
      *  For HtmlEscapers
      */
     implementation("com.google.guava:guava:33.5.0-jre")
+
+    implementation("beacon:java") {
+        version {
+            branch = "master"
+        }
+    }
 }
 
 testing {
