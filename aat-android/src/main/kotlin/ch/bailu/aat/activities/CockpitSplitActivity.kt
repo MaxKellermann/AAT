@@ -55,7 +55,6 @@ class CockpitSplitActivity : AbsKeepScreenOnActivity() {
     }
 
     private fun createContentView(edit: EditorSource): View {
-        val mapSlave = MapFactory.createDefaultMapView(this, SOLID_KEY).split()
         val cockpitA = CockpitView(this, THEME)
         val cockpitB = CockpitView(this, THEME)
         val cockpitC = CockpitView(this, THEME)
@@ -71,15 +70,17 @@ class CockpitSplitActivity : AbsKeepScreenOnActivity() {
             InfoID.SPEED_SENSOR, InfoID.LOCATION
         )
         cockpitA.addC(dispatcher, AverageSpeedDescriptionAP(appContext.storage), InfoID.TRACKER)
-        cockpitA.addC(dispatcher, AveragePaceDescription(appContext.storage), InfoID.TRACKER)
         cockpitA.addC(dispatcher, DistanceDescription(appContext.storage), InfoID.TRACKER)
-        cockpitA.add(
+        cockpitA.addCadence(dispatcher);
+        cockpitA.addHeartRate(dispatcher);
+        cockpitA.addPower(dispatcher);
+
+        cockpitB.addC(dispatcher, AveragePaceDescription(appContext.storage), InfoID.TRACKER)
+        cockpitB.addC(dispatcher, AverageSpeedDescriptionAP(appContext.storage), InfoID.TRACKER)
+        cockpitB.add(
             dispatcher, PredictiveTimeDescription(),
             InfoID.TRACKER_TIMER
         )
-        cockpitB.addC(dispatcher, AveragePaceDescription(appContext.storage), InfoID.TRACKER)
-        cockpitB.addC(dispatcher, AverageSpeedDescriptionAP(appContext.storage), InfoID.TRACKER)
-        cockpitB.addC(dispatcher, MaximumSpeedDescription(appContext.storage), InfoID.TRACKER)
         percentageB.add(cockpitB, 50)
         percentageB.add(
             GraphViewFactory.createSpeedGraph(appContext, this, THEME)
@@ -97,8 +98,6 @@ class CockpitSplitActivity : AbsKeepScreenOnActivity() {
         cockpitC.add(dispatcher, CadenceDescription(), InfoID.CADENCE_SENSOR)
         cockpitC.add(dispatcher, HeartRateDescription(), InfoID.HEART_RATE_SENSOR)
         cockpitC.add(dispatcher, PowerDescription(), InfoID.POWER_SENSOR)
-        cockpitC.add(dispatcher, StepRateDescription(), InfoID.STEP_COUNTER_SENSOR)
-        cockpitC.add(dispatcher, TotalStepsDescription(), InfoID.TRACKER)
         percentageC.add(cockpitC, 50)
         percentageC.add(
             GraphViewFactory.createSpmGraph(appContext, this, THEME)
@@ -109,9 +108,7 @@ class CockpitSplitActivity : AbsKeepScreenOnActivity() {
         mv.add(percentageB)
         mv.add(percentageC)
         mv.add(percentageD)
-        mv.add(mapSlave)
         val mapMaster = MapFactory.createDefaultMapView(this, SOLID_MAP_KEY).map(edit, createButtonBar(mv))
-        MapViewLinker(mapMaster, mapSlave)
         val contentView = ContentView(this, THEME)
         contentView.addMvIndicator(mv)
         contentView.add(

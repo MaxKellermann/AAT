@@ -71,7 +71,6 @@ class CockpitActivity : AbsKeepScreenOnActivity() {
         c1.addC(dispatcher, DistanceDescription(appContext.storage), InfoID.TRACKER)
         c1.addC(dispatcher, AverageSpeedDescriptionAP(appContext.storage), InfoID.TRACKER)
         val c2 = CockpitView(this, theme)
-        c2.add(dispatcher, MaximumSpeedDescription(appContext.storage), InfoID.TRACKER)
         c2.addHeartRate(dispatcher) // With click to update sensors
         c2.addPower(dispatcher) // With click to update sensors
         c2.addCadence(dispatcher) // With click to update sensors
