@@ -28,12 +28,12 @@ class BatteryService : ServiceInterface {
     @Suppress("DEPRECATION")
     override fun read(c: BluetoothGattCharacteristic) {
         if (BATTERY_SERVICE == c.service.uuid && BATTERY_LEVEL == c.uuid) {
-            logBatteryLevel(c.value)
+            logBatteryLevel(c)
         }
     }
 
-    private fun logBatteryLevel(value: ByteArray) {
-        batteryLevelPercentage = value[0].toInt()
+    private fun logBatteryLevel(c: BluetoothGattCharacteristic) {
+        batteryLevelPercentage = c.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) ?: 0
     }
 
     override fun getInformation(iid: Int): GpxInformation? {
